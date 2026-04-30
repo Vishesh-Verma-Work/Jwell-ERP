@@ -1,5 +1,4 @@
-import { useState } from "react";
-import './annu.css';
+import "./annu.css";
 
 function AnnuBill() {
   return (

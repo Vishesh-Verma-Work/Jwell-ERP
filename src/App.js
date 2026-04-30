@@ -1,10 +1,27 @@
 import "./App.css";
 import AnnuBill from "./AnnuBill";
 import { useState, useRef } from "react";
-import html2canvas from "html2canvas";
 
 function App() {
   const [billType, setBillType] = useState(null);
+
+  // ✅ Lazy load html2canvas (Vercel safe)
+  const downloadImage = async () => {
+    const html2canvas = (await import("html2canvas")).default;
+
+    const bill = document.getElementById("billArea");
+    if (!bill) return;
+
+    const canvas = await html2canvas(bill, {
+      backgroundColor: null,
+      scale: 3,
+    });
+
+    const link = document.createElement("a");
+    link.download = "bill.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  };
 
   const today = new Date();
   const localDate = `${today.getFullYear()}-${String(
@@ -33,15 +50,12 @@ function App() {
 
   const refs = useRef([]);
 
-  // ✅ ENTER FIX (GLOBAL ORDER)
   const handleEnter = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const form = e.target.form || document;
-      const index = Array.from(form.querySelectorAll("input,select,textarea"))
-        .indexOf(e.target);
-
-      const next = form.querySelectorAll("input,select,textarea")[index + 1];
+      const inputs = document.querySelectorAll("input,select,textarea");
+      const index = Array.from(inputs).indexOf(e.target);
+      const next = inputs[index + 1];
       if (next) next.focus();
     }
   };
@@ -103,21 +117,6 @@ function App() {
     if (diAmount) final -= Number(diAmount);
 
     setBill({ calc, total, afterAdjust, final });
-  };
-
-  // ✅ IMAGE DOWNLOAD (NO WHITE SPACE)
-  const downloadImage = async () => {
-    const bill = document.getElementById("billArea");
-
-    const canvas = await html2canvas(bill, {
-      backgroundColor: null,
-      scale: 3,
-    });
-
-    const link = document.createElement("a");
-    link.download = "bill.png";
-    link.href = canvas.toDataURL();
-    link.click();
   };
 
   return (
@@ -183,11 +182,13 @@ function App() {
 
           <h3>जमा / शेष</h3>
 
-          <select onKeyDown={handleEnter}
+          <select
+            onKeyDown={handleEnter}
             value={adjust.type}
             onChange={(e) =>
               setAdjust({ ...adjust, type: e.target.value })
-            }>
+            }
+          >
             <option value="jama">जमा</option>
             <option value="reh">शेष</option>
           </select>
