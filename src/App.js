@@ -3,9 +3,10 @@ import AnnuBill from "./AnnuBill";
 import { useState, useRef } from "react";
 
 function App() {
+  
   const [billType, setBillType] = useState(null);
 
-  // ✅ Lazy load html2canvas (Vercel safe)
+
   const downloadImage = async () => {
     const html2canvas = (await import("html2canvas")).default;
 
@@ -94,6 +95,13 @@ function App() {
   };
 
   const generate = () => {
+   
+
+
+
+
+
+
     let total = 0;
 
     let calc = ghaaths.map((g) => {
@@ -120,6 +128,7 @@ function App() {
   };
 
   return (
+    
     <div className="container">
       {!billType ? (
         <div className="choiceBox">
@@ -129,7 +138,7 @@ function App() {
         </div>
       ) : billType === "yadav" ? (
         <div className="form">
-          <h3>तारीख</h3>
+          <h3>Today's Date</h3>
           <input
             type="date"
             value={date}
@@ -137,31 +146,37 @@ function App() {
             onChange={(e) => setDate(e.target.value)}
           />
 
-          <h3>घाट</h3>
+          <h3>Gaath Details</h3>
 
           {ghaaths.map((g, i) => (
             <div key={i} className="row">
               <input
-                placeholder="नंबर"
-                onKeyDown={handleEnter}
-                value={g.num}
-                onChange={(e) => {
-                  let arr = [...ghaaths];
-                  arr[i].num = e.target.value;
-                  setGhaaths(arr);
-                }}
-              />
+  placeholder="Gaath Number"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  onKeyDown={handleEnter}
+  value={g.num}
+  onChange={(e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ""); // only numbers
+    let arr = [...ghaaths];
+    arr[i].num = value;
+    setGhaaths(arr);
+  }}
+/>
 
               <input
-                placeholder="अमाउंट"
-                onKeyDown={handleEnter}
-                value={g.amt}
-                onChange={(e) => {
-                  let arr = [...ghaaths];
-                  arr[i].amt = e.target.value;
-                  setGhaaths(arr);
-                }}
-              />
+  placeholder="Amount"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  onKeyDown={handleEnter}
+  value={g.amt}
+  onChange={(e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ""); // only numbers
+    let arr = [...ghaaths];
+    arr[i].amt = value;
+    setGhaaths(arr);
+  }}
+/>
 
               <input
                 type="date"
@@ -177,7 +192,7 @@ function App() {
           ))}
 
           <button onClick={() => setGhaaths([...ghaaths, { num: "", amt: "", date: "" }])}>
-            + Add More
+            Add More
           </button>
 
           <h3>जमा / शेष</h3>
@@ -193,14 +208,19 @@ function App() {
             <option value="reh">शेष</option>
           </select>
 
-          <input
-            placeholder="अमाउंट"
-            onKeyDown={handleEnter}
-            value={adjust.amt}
-            onChange={(e) =>
-              setAdjust({ ...adjust, amt: e.target.value })
-            }
-          />
+        <input
+  placeholder="Amount"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  onKeyDown={handleEnter}
+  value={adjust.amt}
+  onChange={(e) =>
+    setAdjust({
+      ...adjust,
+      amt: e.target.value.replace(/[^0-9]/g, "") // only numbers
+    })
+  }
+/>
 
           <input
             type="date"
@@ -211,41 +231,54 @@ function App() {
             }
           />
 
-          <h3>घाट दी</h3>
+          <h3>गाँठ दी</h3>
 
           <input
-            placeholder="कुल अमाउंट"
-            onKeyDown={handleEnter}
-            value={diAmount}
-            onChange={(e) => setDiAmount(e.target.value)}
-          />
+  type="number"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  placeholder="Amount"
+  onKeyDown={handleEnter}
+  value={diAmount}
+  onChange={(e) =>
+    setDiAmount(e.target.value.replace(/[^0-9]/g, ""))
+  }
+/>
 
           {diList.map((d, i) => (
             <div key={i} className="row">
               <input
-                placeholder="नंबर"
-                onKeyDown={handleEnter}
-                value={d.num}
-                onChange={(e) => {
-                  let arr = [...diList];
-                  arr[i].num = e.target.value;
-                  setDiList(arr);
-                }}
-              />
+  type="number"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  placeholder="Gaath Number"
+  onKeyDown={handleEnter}
+  value={d.num}
+  onChange={(e) => {
+    let value = e.target.value.replace(/[^0-9]/g, "");
+    let arr = [...diList];
+    arr[i].num = value;
+    setDiList(arr);
+  }}
+/>
 
               <input
-                placeholder="अमाउंट"
-                onKeyDown={handleEnter}
-                value={d.amt}
-                onChange={(e) => {
-                  let arr = [...diList];
-                  arr[i].amt = e.target.value;
-                  setDiList(arr);
-                }}
-              />
+  type="number"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  placeholder="Amount"
+  onKeyDown={handleEnter}
+  value={d.amt}
+  onChange={(e) => {
+    let value = e.target.value.replace(/[^0-9]/g, "");
+    let arr = [...diList];
+    arr[i].amt = value;
+    setDiList(arr);
+  }}
+/>
 
               <input
-                placeholder="विवरण"
+                placeholder="Deatils"
                 onKeyDown={handleEnter}
                 value={d.desc}
                 onChange={(e) => {
@@ -258,19 +291,13 @@ function App() {
           ))}
 
           <button onClick={() => setDiList([...diList, { num: "", amt: "", desc: "" }])}>
-            + Add Item
+            Add Item
           </button>
 
           <br /><br />
 
-          <button className="gen" onClick={generate}>
-            Generate Bill
-          </button>
-
-          <button className="print" onClick={downloadImage}>
-            Download Image
-          </button>
-
+          
+          <br/>
           {bill && (
             <div className="bill" id="billArea">
               <h2>{formatDate(date)}</h2>
@@ -279,16 +306,40 @@ function App() {
                 <div key={i}>
                   {c.num} नं {c.amt} = {formatDate(c.date)} {c.diff}
                   <br />
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
                   {c.int} = Int
                 </div>
               ))}
 
               <div className="line"></div>
-              <div>{bill.total}</div>
+              
+              <div>
+                &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                {bill.total}</div>
 
               {adjust.amt && (
                 <>
+                
                   <div>
+                    &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
                     {adjust.amt} ={" "}
                     {adjust.type === "jama"
                       ? "हमारे जमा थे"
@@ -296,19 +347,51 @@ function App() {
                     {formatDate(adjust.date)}
                   </div>
                   <div className="line"></div>
-                  <div>{bill.afterAdjust}</div>
+                  <div>
+                    &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                    {bill.afterAdjust}</div>
                 </>
               )}
 
               {diAmount && (
                 <>
-                  <div>{diAmount} = घाट दी</div>
+                
+                  <div>
+                    &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  {diAmount} = गाँठ दी</div>
                   <div className="line"></div>
-                  <div>{bill.final}</div>
+                  <div>
+                    &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                    {bill.final}</div>
                 </>
               )}
 
               <div>
+                &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
                 {bill.final} ={" "}
                 {bill.final >= 0
                   ? "आपके शेष रहे"
@@ -316,15 +399,36 @@ function App() {
               </div>
 
               <br />
-              <div>घाट दी</div>
+              <div className="line"></div>
+              <div>गाँठ दी</div>
 
               {diList.map((d, i) => (
                 <div key={i}>
                   {d.num} नं {d.amt} = {d.desc}
                 </div>
               ))}
+              <div className="line"></div>
+              <div>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                {diList.reduce((sum, item) => sum + Number(item.amt || 0), 0) } = 
+              </div>
+              <div className="line"></div>
             </div>
           )}
+          <br/>
+          <button className="gen" onClick={generate}>
+            Generate Bill
+          </button>
+
+          <button className="print" onClick={downloadImage}>
+            Download Image
+          </button>
         </div>
       ) : (
         <AnnuBill />

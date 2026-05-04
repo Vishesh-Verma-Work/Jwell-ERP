@@ -1,48 +1,195 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
+  font-family: 'Inter', system-ui, monospace;
+  background: linear-gradient(135deg, #eef2f7, #e3e9f1);
+  color: #1a1a1a;
+}
+
+/* MAIN CONTAINER */
 .container {
-  padding: 20px;
-  font-family: monospace;
-  max-width: 700px;
-  margin: auto;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 15px;
 }
 
-.row {
-  display: flex;
-  gap: 5px;
-}
-
-input, select {
-  padding: 6px;
-  margin: 5px;
-}
-
-.bill {
-  border: 2px solid black;
-  padding: 10px;
-  font-family: monospace;
-  line-height: 1.6;
-  display: inline-block; /* 🔥 IMPORTANT → no extra width */
+/* CARD STYLE (FORM LOOK) */
+.form {
   background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
-.bill h2 {
+/* HEADINGS */
+h2 {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 22px;
 }
 
+h3 {
+  margin-top: 18px;
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: #555;
+  font-weight: 600;
+}
+
+/* ROW GRID */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+/* INPUTS */
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 5px 0;
+  border-radius: 10px;
+  border: 1px solid #d0d7e2;
+  font-size: 14px;
+  background: #f9fbfd;
+  transition: 0.25s ease;
+}
+
+/* INPUT FOCUS */
+input:focus, select:focus {
+  border-color: #4f7cff;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(79,124,255,0.15);
+}
+
+/* BUTTON BASE */
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+/* PRIMARY BUTTON */
+.gen {
+  background: linear-gradient(135deg, #4f7cff, #3358ff);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(79,124,255,0.4);
+}
+
+.gen:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(79,124,255,0.5);
+}
+
+/* DOWNLOAD BUTTON */
+.print {
+  background: linear-gradient(135deg, #00c853, #009624);
+  color: white;
+  font-weight: 600;
+  margin-left: 10px;
+  box-shadow: 0 4px 12px rgba(0,200,83,0.4);
+}
+
+.print:hover {
+  transform: translateY(-1px);
+}
+
+/* SECONDARY BUTTON */
+button:not(.gen):not(.print) {
+  background: #f1f3f7;
+  color: #444;
+}
+
+button:not(.gen):not(.print):hover {
+  background: #e3e7ef;
+}
+
+/* BILL PREVIEW */
+.bill {
+  margin-top: 25px;
+  padding: 30px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 2px dashed #444;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* BILL TITLE */
+.bill h2 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #000;
+  padding-bottom: 4px;
+}
+
+/* LINE */
 .line {
-  border-top: 1px solid black;
+  border-top: 1px solid #000;
   margin: 6px 0;
 }
 
-.gen {
-  background: black;
-  color: white;
-  padding: 10px 20px;
+/* CHOICE BOX */
+.choiceBox {
+  text-align: center;
+  padding: 30px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-.print {
-  background: green;
+.choiceBox button {
+  margin: 10px;
+  padding: 12px 18px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #6c63ff, #4f7cff);
   color: white;
-  padding: 10px 20px;
-  margin-left: 10px;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 700px) {
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  input, select {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  button {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+
+  .bill {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .form {
+    padding: 15px;
+  }
+}
+
+/* EXTRA SMALL DEVICES */
+@media (max-width: 400px) {
+  .bill {
+    font-size: 12px;
+  }
 }
